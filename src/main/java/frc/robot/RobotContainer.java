@@ -59,7 +59,7 @@ public class RobotContainer {
 
     private CANSparkMax frontLeftAngleMotor = new CANSparkMax(DrivetrainConstants.FRONT_LEFT_ANGLE_ID, MotorType.kBrushless);
     private CANSparkMax frontLeftSpeedMotor = new CANSparkMax(DrivetrainConstants.FRONT_LEFT_SPEED_ID, MotorType.kBrushless);
-    // private AnalogEncoder frontLeftEncoder = new AnalogEncoder(DrivetrainConstants.FRONT_LEFT_ENCODER);
+    // private AnalogEncoder frontLeftEncoder = new AnalogEncoder(DrivetrainConstants.FRONT_LEFT_ENCODER);x
 
     private MaxWheelModule backRightWheel = new MaxWheelModule (
         backRightAngleMotor, backRightSpeedMotor);
@@ -121,7 +121,7 @@ public class RobotContainer {
   }
   
   public void configureObjects() {
-    resetMotors();
+    // resetMotors();
 
     //Configuring the swerve modules
     frontLeftWheel.getTurningEncoder().setInverted(true);
@@ -145,6 +145,7 @@ public class RobotContainer {
 
     coastDrive();
   }
+
 
   private void configureBindings() {
     //Constructs input devices
@@ -172,7 +173,7 @@ public class RobotContainer {
         swerveDrive.drive(
           limitY.calculate(applyDeadband(-leftJoystick.getY(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
           limitX.calculate(applyDeadband(-leftJoystick.getX(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
-          applyDeadband(-rightJoystick.getX(), DrivetrainConstants.ROTATION_DEADBAND)*DriverConstants.angleMultiplier);
+          applyDeadband(rightJoystick.getX(), DrivetrainConstants.ROTATION_DEADBAND)*DriverConstants.angleMultiplier);
       }
       else 
       {
@@ -228,13 +229,13 @@ public class RobotContainer {
 
     //Constructs commands and binds them for intake
 
-    intakeSubsystem.setDefaultCommand(new RunCommand(() -> {
-      intakeSubsystem.intake(0);
-    }, intakeSubsystem));
+    // intakeSubsystem.setDefaultCommand(new RunCommand(() -> {
+    //   intakeSubsystem.intake(0);
+    // }, intakeSubsystem));
 
-    intakeButton.whileTrue(new RunCommand(() -> {
-      intakeSubsystem.intake(limitI.calculate((applyDeadband(-leftJoystick.getThrottle(), IntakeConstants.INTAKE_DEADBAND))));
-    }, intakeSubsystem));
+    // intakeButton.whileTrue(new RunCommand(() -> {
+    //   intakeSubsystem.intake(limitI.calculate((applyDeadband(-leftJoystick.getThrottle(), IntakeConstants.INTAKE_DEADBAND))));
+    // }, intakeSubsystem));
   }
 
   public double applyDeadband(double input, double deadband) {
