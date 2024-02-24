@@ -67,7 +67,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public void drive(double x, double y, double rot) {
 
         if(rot == 0){
-            rot = -rotationController.calculate(odometry.getHeading(), lockedRot);
+            rot = rotationController.calculate(odometry.getHeading(), lockedRot);
         }
         else{
             lockedRot = odometry.getHeading();

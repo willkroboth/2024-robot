@@ -107,7 +107,7 @@ public class RobotContainer {
     SlewRateLimiter limitX = new SlewRateLimiter(6);
     SlewRateLimiter limitY = new SlewRateLimiter(6);
     //Limits shooter motor speed
-    SlewRateLimiter limitI = new SlewRateLimiter(6);
+    SlewRateLimiter limitI = new SlewRateLimiter(1);
     //Limits intake motor speed
     SlewRateLimiter limitS = new SlewRateLimiter(2);
 
@@ -171,9 +171,9 @@ public class RobotContainer {
     swerveDrive.setDefaultCommand(new RunCommand(() -> {
       if (robot.isTeleopEnabled()){
         swerveDrive.drive(
-          limitY.calculate(applyDeadband(-leftJoystick.getY(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
-          limitX.calculate(applyDeadband(-leftJoystick.getX(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
-          applyDeadband(rightJoystick.getX(), DrivetrainConstants.ROTATION_DEADBAND)*DriverConstants.angleMultiplier);
+          -limitY.calculate(applyDeadband(leftJoystick.getY(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
+          -limitX.calculate(applyDeadband(leftJoystick.getX(), DrivetrainConstants.DRIFT_DEADBAND))*DriverConstants.speedMultiplier,
+          applyDeadband(-rightJoystick.getX(), DrivetrainConstants.ROTATION_DEADBAND)*DriverConstants.angleMultiplier);
       }
       else 
       {
@@ -197,7 +197,7 @@ public class RobotContainer {
     }, shooter));
 
     shooterButton.whileTrue(new RunCommand(() -> {
-      shooter.shoot(limitS.calculate((applyDeadband(-leftJoystick.getThrottle(), ShooterConstants.SHOOTER_DEADBAND))));
+      shooter.shoot(limitS.calculate(0.65));//(applyDeadband(-leftJoystick.getThrottle(), ShooterConstants.SHOOTER_DEADBAND))));
     }, shooter));
 
     //Constructs commands and binds them for feed
@@ -229,13 +229,13 @@ public class RobotContainer {
 
     //Constructs commands and binds them for intake
 
-    // intakeSubsystem.setDefaultCommand(new RunCommand(() -> {
-    //   intakeSubsystem.intake(0);
-    // }, intakeSubsystem));
+    intakeSubsystem.setDefaultCommand(new RunCommand(() -> {
+      intakeSubsystem.intake(0);
+    }, intakeSubsystem));
 
-    // intakeButton.whileTrue(new RunCommand(() -> {
-    //   intakeSubsystem.intake(limitI.calculate((applyDeadband(-leftJoystick.getThrottle(), IntakeConstants.INTAKE_DEADBAND))));
-    // }, intakeSubsystem));
+    intakeButton.whileTrue(new RunCommand(() -> {
+      intakeSubsystem.intake(limitI.calculate((applyDeadband(-leftJoystick.getThrottle(), IntakeConstants.INTAKE_DEADBAND))));
+    }, intakeSubsystem));
   }
 
   public double applyDeadband(double input, double deadband) {
@@ -246,16 +246,6 @@ public class RobotContainer {
   }
 
   public void resetMotors() {
-    backLeftAngleMotor.restoreFactoryDefaults();
-    backRightAngleMotor.restoreFactoryDefaults();
-    frontLeftAngleMotor.restoreFactoryDefaults();
-    frontRightAngleMotor.restoreFactoryDefaults();
-
-    backLeftSpeedMotor.restoreFactoryDefaults();
-    backRightSpeedMotor.restoreFactoryDefaults();
-    frontLeftSpeedMotor.restoreFactoryDefaults();
-    frontRightSpeedMotor.restoreFactoryDefaults();
-
     leftShooter.restoreFactoryDefaults();
     rightShooter.restoreFactoryDefaults();
     feedMotor.restoreFactoryDefaults();

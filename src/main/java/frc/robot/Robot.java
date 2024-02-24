@@ -31,8 +31,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer(this);
     m_robotContainer.getOdometry().zeroHeading();
-    m_robotContainer.getOdometry().setAngleOffset(90);
-    m_robotContainer.getOdometry().reset(new Pose2d(0, 0, Rotation2d.fromDegrees(90)));
+    m_robotContainer.getOdometry().setAngleOffset(0);
+    m_robotContainer.getOdometry().reset(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     m_robotContainer.getSwerveDriveSubsystem().resetLockRot();
   }
 
